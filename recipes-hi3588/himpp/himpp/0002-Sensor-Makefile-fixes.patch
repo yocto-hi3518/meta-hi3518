@@ -1,0 +1,310 @@
+From 0bb64230226ff848100e43f05d1855846967d202 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Wed, 23 Jan 2019 10:53:34 +1300
+Subject: [PATCH 2/5] Sensor Makefile fixes
+
+---
+ mpp2/component/isp2/sensor/aptina_9m034/Makefile    | 4 ++--
+ mpp2/component/isp2/sensor/aptina_ar0130/Makefile   | 8 ++++----
+ mpp2/component/isp2/sensor/aptina_ar0140/Makefile   | 4 ++--
+ mpp2/component/isp2/sensor/aptina_ar0330/Makefile   | 4 ++--
+ mpp2/component/isp2/sensor/aptina_mt9p006/Makefile  | 4 ++--
+ mpp2/component/isp2/sensor/himax_1375/Makefile      | 4 ++--
+ mpp2/component/isp2/sensor/ov_9712+/Makefile        | 4 ++--
+ mpp2/component/isp2/sensor/ov_9712/Makefile         | 4 ++--
+ mpp2/component/isp2/sensor/pana34031/Makefile       | 4 ++--
+ mpp2/component/isp2/sensor/pana34041/Makefile       | 4 ++--
+ mpp2/component/isp2/sensor/pixelplus_3100k/Makefile | 4 ++--
+ mpp2/component/isp2/sensor/soi_h22/Makefile         | 4 ++--
+ mpp2/component/isp2/sensor/sony_icx692/Makefile     | 4 ++--
+ mpp2/component/isp2/sensor/sony_imx104/Makefile     | 4 ++--
+ mpp2/component/isp2/sensor/sony_imx122/Makefile     | 4 ++--
+ mpp2/component/isp2/sensor/sony_imx138/Makefile     | 4 ++--
+ mpp2/component/isp2/sensor/sony_imx225/Makefile     | 4 ++--
+ mpp2/component/isp2/sensor/sony_imx236/Makefile     | 4 ++--
+ 18 files changed, 38 insertions(+), 38 deletions(-)
+
+diff --git a/mpp2/component/isp2/sensor/aptina_9m034/Makefile b/mpp2/component/isp2/sensor/aptina_9m034/Makefile
+index 865d8f3..e33ce5a 100644
+--- a/mpp2/component/isp2/sensor/aptina_9m034/Makefile
++++ b/mpp2/component/isp2/sensor/aptina_9m034/Makefile
+@@ -23,8 +23,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/aptina_ar0130/Makefile b/mpp2/component/isp2/sensor/aptina_ar0130/Makefile
+index 52ff050..57d441b 100644
+--- a/mpp2/component/isp2/sensor/aptina_ar0130/Makefile
++++ b/mpp2/component/isp2/sensor/aptina_ar0130/Makefile
+@@ -20,8 +20,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+@@ -57,8 +57,8 @@ TARGETLIB_SO := $(LIBPATH)/libsns_ar0130_720p.so
+ 
+ all:$(TARGETLIB)
+ $(TARGETLIB):$(OBJS)
+-	@($(AR) $(ARFLAGS) $(TARGETLIB) $(OBJS))
+-	@($(CC) $(ARFLAGS_SO) $(TARGETLIB_SO) $(OBJS))
++	($(AR) $(ARFLAGS) $(TARGETLIB) $(OBJS))
++	($(CC) $(ARFLAGS_SO) $(TARGETLIB_SO) $(OBJS))
+ 
+ clean:
+ 	@$(RM) -rf $(TARGETLIB) $(OBJS)
+diff --git a/mpp2/component/isp2/sensor/aptina_ar0140/Makefile b/mpp2/component/isp2/sensor/aptina_ar0140/Makefile
+index eaf5c61..3fa6cc7 100644
+--- a/mpp2/component/isp2/sensor/aptina_ar0140/Makefile
++++ b/mpp2/component/isp2/sensor/aptina_ar0140/Makefile
+@@ -23,8 +23,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/aptina_ar0330/Makefile b/mpp2/component/isp2/sensor/aptina_ar0330/Makefile
+index e419263..f5aa9c4 100644
+--- a/mpp2/component/isp2/sensor/aptina_ar0330/Makefile
++++ b/mpp2/component/isp2/sensor/aptina_ar0330/Makefile
+@@ -20,8 +20,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/aptina_mt9p006/Makefile b/mpp2/component/isp2/sensor/aptina_mt9p006/Makefile
+index c89eee7..dcb5fd2 100644
+--- a/mpp2/component/isp2/sensor/aptina_mt9p006/Makefile
++++ b/mpp2/component/isp2/sensor/aptina_mt9p006/Makefile
+@@ -20,8 +20,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/himax_1375/Makefile b/mpp2/component/isp2/sensor/himax_1375/Makefile
+index cc0a65f..17dd267 100644
+--- a/mpp2/component/isp2/sensor/himax_1375/Makefile
++++ b/mpp2/component/isp2/sensor/himax_1375/Makefile
+@@ -21,8 +21,8 @@ endif
+ 
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/ov_9712+/Makefile b/mpp2/component/isp2/sensor/ov_9712+/Makefile
+index f082775..870e6f2 100644
+--- a/mpp2/component/isp2/sensor/ov_9712+/Makefile
++++ b/mpp2/component/isp2/sensor/ov_9712+/Makefile
+@@ -21,8 +21,8 @@ endif
+ 
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/ov_9712/Makefile b/mpp2/component/isp2/sensor/ov_9712/Makefile
+index 23fd326..ffb572d 100644
+--- a/mpp2/component/isp2/sensor/ov_9712/Makefile
++++ b/mpp2/component/isp2/sensor/ov_9712/Makefile
+@@ -21,8 +21,8 @@ endif
+ 
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/pana34031/Makefile b/mpp2/component/isp2/sensor/pana34031/Makefile
+index d232437..da05545 100644
+--- a/mpp2/component/isp2/sensor/pana34031/Makefile
++++ b/mpp2/component/isp2/sensor/pana34031/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/pana34041/Makefile b/mpp2/component/isp2/sensor/pana34041/Makefile
+index bd47b24..13aebb7 100644
+--- a/mpp2/component/isp2/sensor/pana34041/Makefile
++++ b/mpp2/component/isp2/sensor/pana34041/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/pixelplus_3100k/Makefile b/mpp2/component/isp2/sensor/pixelplus_3100k/Makefile
+index a061cfa..32a31f2 100644
+--- a/mpp2/component/isp2/sensor/pixelplus_3100k/Makefile
++++ b/mpp2/component/isp2/sensor/pixelplus_3100k/Makefile
+@@ -20,8 +20,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/soi_h22/Makefile b/mpp2/component/isp2/sensor/soi_h22/Makefile
+index 48bd82c..adf40d6 100644
+--- a/mpp2/component/isp2/sensor/soi_h22/Makefile
++++ b/mpp2/component/isp2/sensor/soi_h22/Makefile
+@@ -21,8 +21,8 @@ endif
+ 
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_icx692/Makefile b/mpp2/component/isp2/sensor/sony_icx692/Makefile
+index 1d8f8c9..013e9f4 100644
+--- a/mpp2/component/isp2/sensor/sony_icx692/Makefile
++++ b/mpp2/component/isp2/sensor/sony_icx692/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_imx104/Makefile b/mpp2/component/isp2/sensor/sony_imx104/Makefile
+index ba6ebcc..39179dd 100644
+--- a/mpp2/component/isp2/sensor/sony_imx104/Makefile
++++ b/mpp2/component/isp2/sensor/sony_imx104/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_imx122/Makefile b/mpp2/component/isp2/sensor/sony_imx122/Makefile
+index 995f722..b583b0a 100644
+--- a/mpp2/component/isp2/sensor/sony_imx122/Makefile
++++ b/mpp2/component/isp2/sensor/sony_imx122/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_imx138/Makefile b/mpp2/component/isp2/sensor/sony_imx138/Makefile
+index d0bc56c..e56ed6f 100644
+--- a/mpp2/component/isp2/sensor/sony_imx138/Makefile
++++ b/mpp2/component/isp2/sensor/sony_imx138/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_imx225/Makefile b/mpp2/component/isp2/sensor/sony_imx225/Makefile
+index 29fd417..bd9290c 100644
+--- a/mpp2/component/isp2/sensor/sony_imx225/Makefile
++++ b/mpp2/component/isp2/sensor/sony_imx225/Makefile
+@@ -14,8 +14,8 @@ LIBPATH = $(ISP_PATH)/lib
+ OBJPATH = ./obj
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+diff --git a/mpp2/component/isp2/sensor/sony_imx236/Makefile b/mpp2/component/isp2/sensor/sony_imx236/Makefile
+index 42f7fe0..07c354b 100644
+--- a/mpp2/component/isp2/sensor/sony_imx236/Makefile
++++ b/mpp2/component/isp2/sensor/sony_imx236/Makefile
+@@ -20,8 +20,8 @@ HI_GPIO_I2C:=HI_GPIO_XXX
+ endif
+ 
+ ARFLAGS = rcv
+-ARFLAGS_SO = -shared -fPIC -o
+-CFLAGS  = -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
++ARFLAGS_SO = $(TARGET_ARFLAGS_SO)-shared -fPIC -o
++CFLAGS  = $(TARGET_CFLAGS) -Wall -fPIC -D$(HI_FPGA) -D$(HI_GPIO_I2C)
+ CFLAGS  += -O2
+ 
+ ifeq ($(HIGDB),HI_GDB)
+-- 
+2.7.4
+

@@ -1,0 +1,37 @@
+From 2ad590928cc0ae0147bb58e7a291e959c14b9207 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Wed, 23 Jan 2019 12:05:44 +1300
+Subject: [PATCH 5/5] Fix extdrv tw2865
+
+---
+ mpp2/extdrv/tw2865/Makefile | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/mpp2/extdrv/tw2865/Makefile b/mpp2/extdrv/tw2865/Makefile
+index dad23d4..9ba3921 100644
+--- a/mpp2/extdrv/tw2865/Makefile
++++ b/mpp2/extdrv/tw2865/Makefile
+@@ -6,14 +6,17 @@ endif
+ obj-m := tw2865.o
+ tw_2865-y += tw2865.o
+ 
++
++
++
+ EXTRA_CFLAGS += -D$(HI_FPGA)
+ #EXTRA_CFLAGS += -DHI_I2C
+ EXTRA_CFLAGS += -DHI_GPIO_I2C
+ 
+-EXTRA_CFLAGS+=-I$(PWD)/../gpio-i2c
+-EXTRA_CFLAGS+=-I$(PWD)/../hi_i2c
++EXTRA_CFLAGS+=-I$(CURPATH)/../gpio-i2c
++EXTRA_CFLAGS+=-I$(CURPATH)/../hi_i2c
+ 
+ default:
+-	make -C $(LINUX_ROOT) M=$(PWD) modules 
++	make -C $(LINUX_ROOT) M=$(PWD) CURPATH=$(PWD)  modules V=1
+ clean: 
+ 	make -C $(LINUX_ROOT) M=$(PWD) clean
+-- 
+2.7.4
+

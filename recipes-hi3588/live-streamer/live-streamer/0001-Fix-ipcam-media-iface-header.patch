@@ -1,0 +1,24 @@
+From e069d1bcefcdf0e9c3f8a80a4bf1cb6baf3bc1fb Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Thu, 24 Jan 2019 13:41:15 +1300
+Subject: [PATCH] Fix ipcam-media-iface header
+
+---
+ src/ipcam-media-iface.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/ipcam-media-iface.h b/src/ipcam-media-iface.h
+index e0477d9..c5230af 100644
+--- a/src/ipcam-media-iface.h
++++ b/src/ipcam-media-iface.h
+@@ -24,6 +24,7 @@
+ #include <string>
+ #include <vector>
+ #include <dbus-c++/error.h>
++#include <sys/time.h>
+ 
+ struct SDL_Surface;
+ 
+-- 
+2.7.4
+

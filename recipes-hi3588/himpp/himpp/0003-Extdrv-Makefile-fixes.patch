@@ -1,0 +1,137 @@
+From 9da7c8ad24a619f6d702fca19b22aaa85c624110 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Wed, 23 Jan 2019 11:07:20 +1300
+Subject: [PATCH 3/5] Extdrv Makefile fixes
+
+---
+ mpp2/Makefile.param              | 2 +-
+ mpp2/extdrv/gpio-i2c-ex/Makefile | 4 ++--
+ mpp2/extdrv/gpio-i2c/Makefile    | 4 ++--
+ mpp2/extdrv/hi_i2c/Makefile      | 4 ++--
+ mpp2/extdrv/pwm/Makefile         | 4 ++--
+ mpp2/extdrv/ssp-ad9020/Makefile  | 4 ++--
+ mpp2/extdrv/ssp-pana/Makefile    | 4 ++--
+ mpp2/extdrv/ssp-sony/Makefile    | 4 ++--
+ 8 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/mpp2/Makefile.param b/mpp2/Makefile.param
+index 0632169..fc6e5c8 100644
+--- a/mpp2/Makefile.param
++++ b/mpp2/Makefile.param
+@@ -109,7 +109,7 @@ endif
+ export CC:=$(CROSS)gcc
+ export AR:=$(CROSS)ar
+ 
+-export MPP_CFLAGS:= -Wall
++export MPP_CFLAGS:= $(TARGET_CFLAGS) -Wall 
+ 
+ ifeq ($(HIGDB), y)
+ 	MPP_CFLAGS += -g
+diff --git a/mpp2/extdrv/gpio-i2c-ex/Makefile b/mpp2/extdrv/gpio-i2c-ex/Makefile
+index 84a5a4d..1221115 100644
+--- a/mpp2/extdrv/gpio-i2c-ex/Makefile
++++ b/mpp2/extdrv/gpio-i2c-ex/Makefile
+@@ -9,8 +9,8 @@ gpioi2c-y += gpioi2c_ex.o
+ EXTRA_CFLAGS += -D$(HI_FPGA)
+  
+ default:	
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_read_ex i2c_read_ex.c strfunc.c	
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_write_ex i2c_write_ex.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_read_ex i2c_read_ex.c strfunc.c	
++	$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_write_ex i2c_write_ex.c	strfunc.c
+ 	@make -C $(LINUX_ROOT) M=$(PWD) modules 
+ clean:
+ 	rm *.o i2c_read_ex i2c_write_ex -rf
+diff --git a/mpp2/extdrv/gpio-i2c/Makefile b/mpp2/extdrv/gpio-i2c/Makefile
+index 35f0ab5..eb4a861 100644
+--- a/mpp2/extdrv/gpio-i2c/Makefile
++++ b/mpp2/extdrv/gpio-i2c/Makefile
+@@ -10,8 +10,8 @@ gpioi2c-y += gpio_i2c.o
+ EXTRA_CFLAGS += -D$(HI_FPGA) 
+  
+ default:	
+-	@$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_read i2c_read.c strfunc.c	
+-	@$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_write i2c_write.c strfunc.c
++	@$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_read i2c_read.c strfunc.c	
++	@$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_write i2c_write.c strfunc.c
+ 	@make -C $(LINUX_ROOT) M=$(PWD) modules
+ clean:
+ 	@rm *.o i2c_read i2c_write -rf
+diff --git a/mpp2/extdrv/hi_i2c/Makefile b/mpp2/extdrv/hi_i2c/Makefile
+index f239d45..7c81b29 100644
+--- a/mpp2/extdrv/hi_i2c/Makefile
++++ b/mpp2/extdrv/hi_i2c/Makefile
+@@ -12,8 +12,8 @@ ifeq ($(HIARCH),hi3518)
+ endif
+ 
+ all:
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_read i2c_read.c	strfunc.c
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o i2c_write i2c_write.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_read i2c_read.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o i2c_write i2c_write.c	strfunc.c
+ 	make -C $(LINUX_ROOT) M=$(PWD) modules
+ 
+ clean:
+diff --git a/mpp2/extdrv/pwm/Makefile b/mpp2/extdrv/pwm/Makefile
+index ab8a1c8..157d2f5 100644
+--- a/mpp2/extdrv/pwm/Makefile
++++ b/mpp2/extdrv/pwm/Makefile
+@@ -8,8 +8,8 @@ obj-m := pwm.o
+ hi_pwm-y += pwm.o
+ 
+ default:	
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o pwm_write pwm_write.c	strfunc.c
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o pwm_test pwm_test.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o pwm_write pwm_write.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o pwm_test pwm_test.c	strfunc.c
+ 	@$(MAKE) -C $(LINUX_ROOT) M=$(PWD) modules 
+ 	@rm -f *.o modules.* *.symvers *.mod.c
+ clean:
+diff --git a/mpp2/extdrv/ssp-ad9020/Makefile b/mpp2/extdrv/ssp-ad9020/Makefile
+index bb84c4d..59f4422 100644
+--- a/mpp2/extdrv/ssp-ad9020/Makefile
++++ b/mpp2/extdrv/ssp-ad9020/Makefile
+@@ -13,8 +13,8 @@ ifeq ($(HIARCH),hi3518)
+ endif
+ 
+ all:
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
++	$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
+ 	make -C $(LINUX_ROOT) M=$(PWD) modules
+ 
+ clean:
+diff --git a/mpp2/extdrv/ssp-pana/Makefile b/mpp2/extdrv/ssp-pana/Makefile
+index 7d1904a..d430940 100644
+--- a/mpp2/extdrv/ssp-pana/Makefile
++++ b/mpp2/extdrv/ssp-pana/Makefile
+@@ -12,8 +12,8 @@ ifeq ($(HIARCH),hi3518)
+ endif
+ 
+ all:
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
+-	$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
++	$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
++	$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
+ 	make -C $(LINUX_ROOT) M=$(PWD) modules
+ 
+ clean:
+diff --git a/mpp2/extdrv/ssp-sony/Makefile b/mpp2/extdrv/ssp-sony/Makefile
+index bd6e2dd..7e48f67 100644
+--- a/mpp2/extdrv/ssp-sony/Makefile
++++ b/mpp2/extdrv/ssp-sony/Makefile
+@@ -15,8 +15,8 @@ ifeq ($(HIARCH),hi3518)
+ endif
+ 
+ default:	
+-	@$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
+-	@$(CC) $(MPP_CLFAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
++	@$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_read ssp_read.c strfunc.c	
++	@$(CC) $(MPP_CFLAGS) -g -Wall -o ssp_write ssp_write.c	strfunc.c
+ 	@make -C $(LINUX_ROOT) M=$(PWD) modules 
+ clean:
+ 	@rm -fr *.o ssp_read ssp_write
+-- 
+2.7.4
+
