@@ -28,5 +28,5 @@ PV = "${LINUX_VERSION}"
 
 S = "${WORKDIR}/linux-${PV}"
 
-COMPATIBLE_MACHINE = "qemuarm|qemuarm64|qemux86|qemuppc|qemumips|qemumips64|qemux86-64"
+COMPATIBLE_MACHINE = "hi3518"
 
