@@ -1,0 +1,17 @@
+#!/bin/bash
+
+LAYER_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+SOURCES_DIR="$( cd ${LAYER_DIR}/..  >/dev/null 2>&1 && pwd )"
+CUR_DIR="$( pwd )"
+export TEMPLATECONF=${LAYER_DIR}/conf
+
+
+#if [ $_ != $0 ]; then
+#    echo "Error: This script needs to be sourced."
+#    exit 1
+#fi
+
+
+. ${SOURCES_DIR}/openembedded-core/oe-init-build-env ${CUR_DIR}/build_hi3518 ${SOURCES_DIR}/bitbake
+
+sed -i "s|##SOURCES##|${SOURCES_DIR}|g" $BUILDDIR/conf/bblayers.conf
