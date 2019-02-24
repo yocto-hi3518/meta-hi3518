@@ -35,3 +35,5 @@ inherit pkgconfig autotools
 EXTRA_OECONF = "--with-hi3518v100mpp"
 
 DEPENDS = "himpp libdbus-c++ libdbus-c++-native libev fontconfig libsdl-ttf libsdl-image live555"
+
+RDEPENDS_${PN} += "himpp"
