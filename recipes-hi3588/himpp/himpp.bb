@@ -15,6 +15,11 @@ LIC_FILES_CHKSUM = ""
 # No information for SRC_URI yet (only an external source tree was specified)
 SRC_URI = "https://github.com/hi35xx/hi35xx-buildroot/raw/master/package/himpp/himpp-hi3518v100/hi3518v100-mpp2-1.0.B.0.tgz \
            file://0001-Makefile-fixes.patch \
+           file://clkcfg_hi3518.sh \
+           file://load3518.sh \
+           file://lowpower.sh \
+           file://pinmux_hi3518.sh \
+           file://sysctl_hi3518.sh \
            "
 
 SRC_URI[md5sum] = "50f84546addceac4e4fc8163b06ee995"
@@ -112,9 +117,12 @@ INSANE_SKIP_${PN} += "ldflags file-rdeps"
 INSANE_SKIP_${PN}-dev += "dev-elf ldflags"
 
 
+FILES_${PN} += "${kmoddir}/*.sh"
+
 do_install() {
    install -d ${D}${kmoddir}
    install -d ${D}${libdir}
+   install -m 0755 ${S}/*.sh ${D}${kmoddir}/
    install -m 0755 ${S}/mpp2/ko/*.ko ${D}${kmoddir}
    install -m 0755 ${S}/${HIMMP_EXT_DIR}/*/*.ko ${D}/${kmoddir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.a ${D}${libdir}
