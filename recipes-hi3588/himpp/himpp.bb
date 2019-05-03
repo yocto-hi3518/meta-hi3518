@@ -15,6 +15,7 @@ LIC_FILES_CHKSUM = ""
 # No information for SRC_URI yet (only an external source tree was specified)
 SRC_URI = "https://github.com/hi35xx/hi35xx-buildroot/raw/master/package/himpp/himpp-hi3518v100/hi3518v100-mpp2-1.0.B.0.tgz \
            file://0001-Makefile-fixes.patch \
+           file://0002-SC1135-support.patch \
            file://clkcfg_hi3518.sh \
            file://load3518.sh \
            file://lowpower.sh \

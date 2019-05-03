@@ -1,0 +1,25 @@
+From 569b366fb878732d577b93728d7318c70f24f3d8 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Wed, 6 Mar 2019 00:44:03 +1300
+Subject: [PATCH 1/2] Add link to vqe
+
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 044b2f0..731ac2d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -137,7 +137,7 @@ esac
+ if test "x$with_hi3518v100mpp" != xno; then
+   hi3518v100mppinc="-I$hi3518v100mpppfx/include/hi3518v100mpp"
+   hi3518v100mpplib="-L$hi3518v100mpppfx/lib \ 
+-    -lmpi -lresampler -laec -lvqev2 -lanr -lVoiceEngine \
++    -lmpi -lupvqe -ldnvqe -lresampler -laec -lvqev2 -lanr -lVoiceEngine \
+     -lisp -l_hiae -l_hiawb -l_hiaf -lpthread"
+   AC_CHECK_LIBRARY([${hi3518v100mppinc}], $[{hi3518v100mpplib}],
+     [AC_LANG_PROGRAM(
+-- 
+2.7.4
+

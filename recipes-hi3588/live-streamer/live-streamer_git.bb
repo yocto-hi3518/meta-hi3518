@@ -13,6 +13,7 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=8f0e2cd40e05189ec81232da84bd6e1a"
 
 SRC_URI = "git://github.com/hi35xx/live-streamer.git;protocol=https \
            file://0001-Fix-ipcam-media-iface-header.patch \
+           file://0002-SC1135-support.patch file://0001-Add-link-to-vqe.patch \
            "
 
 # Modify these as desired

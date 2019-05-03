@@ -1,0 +1,80 @@
+From 5310e3b59d5ce62cb6955c1d52dc2e459726e984 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Fri, 3 May 2019 21:08:05 +1200
+Subject: [PATCH 2/2] SC1135 support
+
+---
+ src/platform/hi3518v100mpp/himpp-video-sensor.cpp | 50 +++++++++++++++++++++++
+ 1 file changed, 50 insertions(+)
+
+diff --git a/src/platform/hi3518v100mpp/himpp-video-sensor.cpp b/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
+index 7eeb2d2..3535b7e 100644
+--- a/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
++++ b/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
+@@ -31,6 +31,55 @@ struct HIMPP_SENSOR_CONFIG
+ };
+ 
+ /***************************************************************************
++ * SmartSens SC1135
++ ***************************************************************************/
++
++static ISP_IMAGE_ATTR_S smartsens_sc1135_image_attr = {
++    .u16Width           = 1280,
++    .u16Height          = 720,
++    .u16FrameRate       = 30,
++    .enBayer            = BAYER_BGGR
++};
++
++static ISP_INPUT_TIMING_S smartsens_sc1135_input_timing = {
++    .enWndMode          = ISP_WIND_NONE
++};
++
++static VI_DEV_ATTR_S smartsens_sc1135_dev_attr = {
++	.enIntfMode     = VI_MODE_DIGITAL_CAMERA,
++	.enWorkMode     = VI_WORK_MODE_1Multiplex,
++	.au32CompMask   = { 0xFFF0000, 0x0 },
++	.enScanMode     = VI_SCAN_PROGRESSIVE,
++	.s32AdChnId     = { -1, -1, -1, -1 },
++	.enDataSeq      = VI_INPUT_DATA_YUYV,
++	.stSynCfg       = {
++		.enVsync        = VI_VSYNC_PULSE,
++		.enVsyncNeg     = VI_VSYNC_NEG_HIGH,
++		.enHsync        = VI_HSYNC_VALID_SINGNAL,
++		.enHsyncNeg     = VI_HSYNC_NEG_HIGH,
++		.enVsyncValid   = VI_VSYNC_NORM_PULSE,
++		.enVsyncValidNeg = VI_VSYNC_VALID_NEG_HIGH,
++		.stTimingBlank  = {
++			.u32HsyncHfb = 0, .u32HsyncAct = 1280, .u32HsyncHbb = 0,
++			.u32VsyncVfb = 0,   .u32VsyncVact = 720, .u32VsyncVbb = 0,
++			.u32VsyncVbfb = 0,  .u32VsyncVbact = 0,  .u32VsyncVbbb = 0
++		}
++	},
++	.enDataPath         = VI_PATH_ISP,
++	.enInputDataType    = VI_DATA_TYPE_RGB,
++	.bDataRev           = HI_FALSE,
++};
++
++static HIMPP_SENSOR_CONFIG smartsens_sc1135_sensor_config = {
++	.name               = "sc1135",
++	.module_path        = "libsns_sc1135.so",
++	.isp_image_attr     = &smartsens_sc1135_image_attr,
++	.isp_input_timing   = &smartsens_sc1135_input_timing,
++	.vi_dev_attr        = &smartsens_sc1135_dev_attr
++};
++
++
++/***************************************************************************
+  * Aptina AR0130 
+  ***************************************************************************/
+ 
+@@ -806,6 +855,7 @@ public:
+     HimppVideoSensorInitializer()
+     {
+ #define addSensor(sensor) himpp_video_sensor_map.emplace(sensor.name, &sensor)
++        addSensor(smartsens_sc1135_sensor_config);
+         addSensor(aptina_ar0130_sensor_config);
+         addSensor(aptina_mt9m034_sensor_config);
+         addSensor(galaxycore_gc1004_sensor_config);
+-- 
+2.7.4
+
