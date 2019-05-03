@@ -30,9 +30,9 @@ S = "${WORKDIR}"
 PARALLEL_MAKE = ""
 
 EXTRA_OEMAKE += "\
-    ARCH=arm \
+    ARCH=${ARCH} \
     HIARCH=hi3518 \
-    LIBC=musl \
+    LIBC=${TCLIBC} \
     CROSS=${TARGET_PREFIX} \
     CROSS_COMPILE=${TARGET_PREFIX} \
     LINUX_ROOT=${STAGING_KERNEL_DIR} \
