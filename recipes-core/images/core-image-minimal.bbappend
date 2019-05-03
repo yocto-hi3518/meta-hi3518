@@ -1,2 +1,4 @@
-IMAGE_INSTALL += "live-streamer"
-IMAGE_FSTYPES = " jffs2 tar.gz "
+IMAGE_INSTALL += " live-streamer himpp packagegroup-core-tools-debug "
+IMAGE_FSTYPES = " tar.gz "
+
+IMAGE_FEATURES += " ssh-server-dropbear "

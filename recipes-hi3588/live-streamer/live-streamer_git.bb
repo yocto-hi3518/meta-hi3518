@@ -32,8 +32,11 @@ S = "${WORKDIR}/git"
 inherit pkgconfig autotools
 
 # Specify any options you want to pass to the configure script using EXTRA_OECONF:
-EXTRA_OECONF = "--with-hi3518v100mpp"
+EXTRA_OECONF = "--with-hi3518v100mpp=yes"
 
 DEPENDS = "himpp libdbus-c++ libdbus-c++-native libev fontconfig libsdl-ttf libsdl-image live555"
 
-RDEPENDS_${PN} += "himpp"
+RDEPENDS_${PN} += "himpp himpp-dev"
+
+INSANE_SKIP_${PN} += "file-rdeps dev-deps"
+TARGET_LDFLAGS_remove = "${ASNEEDED}"

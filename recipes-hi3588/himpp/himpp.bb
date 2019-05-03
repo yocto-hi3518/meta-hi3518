@@ -87,6 +87,7 @@ do_compile() {
     himpp_make_sensor sony_imx138
     himpp_make_sensor sony_imx225
     himpp_make_sensor sony_imx236
+    himpp_make_sensor smartsens_sc1135
 
 
     himpp_make_ext gpio-i2c
@@ -109,22 +110,32 @@ do_compile() {
     himpp_make_sample venc
     #himpp_make_sample vio
 
+   cd ${S}/mpp2/lib/
+   for f in *.a; do 
+     $CC -shared -fPIC -o ${f%.a}.so -Wl,--whole-archive $f -Wl,--no-whole-archive
+   done
+
 }
 
 kmoddir = "/lib/modules/${KERNEL_VERSION}/kernel/drivers/himpp"
 
 INSANE_SKIP_${PN} += "ldflags file-rdeps"
-INSANE_SKIP_${PN}-dev += "dev-elf ldflags"
+INSANE_SKIP_${PN}-dev += "dev-elf"
 
 
 FILES_${PN} += "${kmoddir}/*.sh"
+#INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
 do_install() {
    install -d ${D}${kmoddir}
    install -d ${D}${libdir}
    install -m 0755 ${S}/*.sh ${D}${kmoddir}/
    install -m 0755 ${S}/mpp2/ko/*.ko ${D}${kmoddir}
+   install -m 0755 ${S}/mpp2/lib/*.so ${D}${libdir}
    install -m 0755 ${S}/${HIMMP_EXT_DIR}/*/*.ko ${D}/${kmoddir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.a ${D}${libdir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.so ${D}${libdir}
+
+   install -d  ${D}${includedir}/hi3518v100mpp
+   cp -a ${S}/mpp2/include/* ${D}${includedir}/hi3518v100mpp
 }
