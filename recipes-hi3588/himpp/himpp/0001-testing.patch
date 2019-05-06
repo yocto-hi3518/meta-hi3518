@@ -7,7 +7,6 @@ Subject: [PATCH] testing
  .../isp2/sensor/aptina_ar0130/ar0130_cmos.c        |  359 ++---
  .../isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c  |  431 ++----
  .../isp2/sensor/smartsens_sc1135/Makefile          |   75 +
- .../smartsens_sc1135/obj/sc1135_sensor_ctl.o       |  Bin 0 -> 4496 bytes
  .../isp2/sensor/smartsens_sc1135/sc1135_cmos.c     | 1450 ++++++++++++++++++++
  .../sensor/smartsens_sc1135/sc1135_sensor_ctl.c    |  358 +++++
  mpp2/sample/common/sample_comm_isp.c               |    2 +-
@@ -18,10 +17,10 @@ Subject: [PATCH] testing
  create mode 100644 mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c
  create mode 100644 mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c
 
-diff --git a/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c b/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
-index 5215615..f9530d9 100644
---- a/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
-+++ b/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
+Index: 1.0-r0/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
+===================================================================
+--- 1.0-r0.orig/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
++++ 1.0-r0/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_cmos.c
 @@ -22,7 +22,6 @@ extern "C"{
  /*set Frame End Update Mode 2 with HI_MPI_ISP_SetAEAttr and set this value 1 to avoid flicker in antiflicker mode */
  /*when use Frame End Update Mode 2, the speed of i2c will affect whole system's performance                       */
@@ -30,7 +29,7 @@ index 5215615..f9530d9 100644
  /****************************************************************************
   * local variables                                                            *
   ****************************************************************************/
-@@ -31,37 +30,49 @@ extern const unsigned int sensor_i2c_addr;
+@@ -31,37 +30,49 @@ extern const unsigned int sensor_i2c_add
  extern unsigned int sensor_addr_byte;
  extern unsigned int sensor_data_byte;
  
@@ -114,7 +113,7 @@ index 5215615..f9530d9 100644
      {0  ,120 ,220 ,310 ,390 ,470 ,540 ,610 ,670 ,730 ,786 ,842 ,894 ,944 ,994 ,1050,    
      1096,1138,1178,1218,1254,1280,1314,1346,1378,1408,1438,1467,1493,1519,1543,1568,    
      1592,1615,1638,1661,1683,1705,1726,1748,1769,1789,1810,1830,1849,1869,1888,1907,    
-@@ -262,20 +273,17 @@ HI_U32 cmos_get_isp_black_level(ISP_CMOS_BLACK_LEVEL_S *pstBlackLevel)
+@@ -262,20 +273,17 @@ HI_U32 cmos_get_isp_black_level(ISP_CMOS
  
  HI_VOID cmos_set_pixel_detect(HI_BOOL bEnable)
  {
@@ -141,7 +140,7 @@ index 5215615..f9530d9 100644
      }
  
      return;
-@@ -362,11 +370,11 @@ static HI_S32 cmos_get_ae_default(AE_SENSOR_DEFAULT_S *pstAeSnsDft)
+@@ -362,11 +370,11 @@ static HI_S32 cmos_get_ae_default(AE_SEN
      pstAeSnsDft->au8HistThresh[2] = 0x60;
      pstAeSnsDft->au8HistThresh[3] = 0x80;
      
@@ -157,7 +156,7 @@ index 5215615..f9530d9 100644
  
      pstAeSnsDft->stIntTimeAccu.enAccuType = AE_ACCURACY_LINEAR;
      pstAeSnsDft->stIntTimeAccu.f32Accuracy = 1;
-@@ -376,18 +384,18 @@ static HI_S32 cmos_get_ae_default(AE_SENSOR_DEFAULT_S *pstAeSnsDft)
+@@ -376,18 +384,18 @@ static HI_S32 cmos_get_ae_default(AE_SEN
      pstAeSnsDft->u32MinIntTimeTarget = 2;
  
      pstAeSnsDft->stAgainAccu.enAccuType = AE_ACCURACY_TABLE;
@@ -184,7 +183,7 @@ index 5215615..f9530d9 100644
  
      pstAeSnsDft->u32ISPDgainShift = 8;
      pstAeSnsDft->u32MaxISPDgainTarget = 4 << pstAeSnsDft->u32ISPDgainShift;
-@@ -416,46 +424,50 @@ static HI_S32 cmos_get_sensor_max_resolution(ISP_CMOS_SENSOR_MAX_RESOLUTION *pst
+@@ -416,46 +424,50 @@ static HI_S32 cmos_get_sensor_max_resolu
  /* the function of sensor set fps */
  static HI_VOID cmos_fps_set(HI_U8 u8Fps, AE_SENSOR_DEFAULT_S *pstAeSnsDft)
  {
@@ -211,8 +210,6 @@ index 5215615..f9530d9 100644
 -    }
  
 -    pstAeSnsDft->u32FullLinesStd = gu32FullLinesStd;
--
--    return;
 +	HI_U32 u32VblankingLines = 0xFFFF;
 +	if ((u8Fps <= 30) && (u8Fps >= 1))
 +	{
@@ -234,7 +231,8 @@ index 5215615..f9530d9 100644
 +	gu8Fps = u8Fps;
 +	pstAeSnsDft->u32LinesPer500ms = gu32FullLinesStd * 30 / 2;
 +	pstAeSnsDft->u32FullLinesStd = gu32FullLinesStd;
-+
+ 
+-    return;
 +	return;
  }
  
@@ -263,7 +261,7 @@ index 5215615..f9530d9 100644
      HI_S32 i;
      static HI_BOOL bInit = HI_FALSE;
  
-@@ -470,100 +482,127 @@ static HI_VOID cmos_init_regs_info(HI_VOID)
+@@ -470,100 +482,127 @@ static HI_VOID cmos_init_regs_info(HI_VO
              g_stSnsRegsInfo.astI2cData[i].u32DataByteNum = sensor_data_byte;
          }
          g_stSnsRegsInfo.astI2cData[0].bDelayCfg = HI_FALSE;
@@ -466,7 +464,7 @@ index 5215615..f9530d9 100644
  }
  
  static HI_S32 cmos_get_awb_default(AWB_SENSOR_DEFAULT_S *pstAwbSnsDft)
-@@ -576,19 +615,19 @@ static HI_S32 cmos_get_awb_default(AWB_SENSOR_DEFAULT_S *pstAwbSnsDft)
+@@ -576,19 +615,19 @@ static HI_S32 cmos_get_awb_default(AWB_S
  
      memset(pstAwbSnsDft, 0, sizeof(AWB_SENSOR_DEFAULT_S));
  
@@ -477,15 +475,14 @@ index 5215615..f9530d9 100644
      pstAwbSnsDft->au16GainOffset[1] = 0x100;
      pstAwbSnsDft->au16GainOffset[2] = 0x100;
 -    pstAwbSnsDft->au16GainOffset[3] = 0x01a7;
--
++    pstAwbSnsDft->au16GainOffset[3] = 0x171;
+ 
 -    pstAwbSnsDft->as32WbPara[0] = 86;
 -    pstAwbSnsDft->as32WbPara[1] = -16;
 -    pstAwbSnsDft->as32WbPara[2] = -182;
 -    pstAwbSnsDft->as32WbPara[3] = 243836;
 -    pstAwbSnsDft->as32WbPara[4] = 128;
 -    pstAwbSnsDft->as32WbPara[5] = -195566;
-+    pstAwbSnsDft->au16GainOffset[3] = 0x171;
-+
 +	pstAwbSnsDft->as32WbPara[0] = 104;
 +	pstAwbSnsDft->as32WbPara[1] = 9;
 +	pstAwbSnsDft->as32WbPara[2] = -143;
@@ -495,10 +492,10 @@ index 5215615..f9530d9 100644
  
      memcpy(&pstAwbSnsDft->stCcm, &g_stAwbCcm, sizeof(AWB_CCM_S));
      memcpy(&pstAwbSnsDft->stAgcTbl, &g_stAwbAgcTable, sizeof(AWB_AGC_TABLE_S));
-diff --git a/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c b/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
-index 7678799..36def45 100644
---- a/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
-+++ b/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
+Index: 1.0-r0/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
+===================================================================
+--- 1.0-r0.orig/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
++++ 1.0-r0/mpp2/component/isp2/sensor/aptina_ar0130/ar0130_sensor_ctl.c
 @@ -12,9 +12,9 @@
  #include "hi_i2c.h"
  #endif
@@ -753,6 +750,18 @@ index 7678799..36def45 100644
 -    sensor_write_register( 0x3044, 0x0400); // DARK_CONTROL
 -                                    
 -    sensor_write_register( 0x3012, 0x02A0); // COARSE_INTEGRATION_TIME
+-
+-    
+-    //720p 30fps Setup                   
+-    sensor_write_register( 0x3032, 0x0000); // DIGITAL_BINNING
+-    sensor_write_register( 0x3002, 0x0002); // Y_ADDR_START
+-    sensor_write_register( 0x3004, 0x0000); // X_ADDR_START
+-    sensor_write_register( 0x3006, 0x02D1);//Row End (A) = 721
+-    sensor_write_register( 0x3008, 0x04FF);//Column End (A) = 1279
+-    sensor_write_register( 0x300A, 0x02EA);//Frame Lines (A) = 746
+-    sensor_write_register( 0x300C, 0x08ba);
+-    sensor_write_register( 0x3012, 0x0133);//Coarse_IT_Time (A) = 307
+-    sensor_write_register( 0x306e, 0x9211);//Coarse_IT_Time (A) = 307
 +	sensor_write_register(0x3000,0x01);//manualstreamenbale
 +	sensor_write_register(0x3003,0x01);//softreset
 +	sensor_write_register(0x3400,0x53);
@@ -793,43 +802,7 @@ index 7678799..36def45 100644
 +	sensor_write_register(0x5781,0x04); //20160328
 +	sensor_write_register(0x5785,0x0c); //20160328
 +	sensor_write_register(0x5000,0x66);
- 
--    
--    //720p 30fps Setup                   
--    sensor_write_register( 0x3032, 0x0000); // DIGITAL_BINNING
--    sensor_write_register( 0x3002, 0x0002); // Y_ADDR_START
--    sensor_write_register( 0x3004, 0x0000); // X_ADDR_START
--    sensor_write_register( 0x3006, 0x02D1);//Row End (A) = 721
--    sensor_write_register( 0x3008, 0x04FF);//Column End (A) = 1279
--    sensor_write_register( 0x300A, 0x02EA);//Frame Lines (A) = 746
--    sensor_write_register( 0x300C, 0x08ba);
--    sensor_write_register( 0x3012, 0x0133);//Coarse_IT_Time (A) = 307
--    sensor_write_register( 0x306e, 0x9211);//Coarse_IT_Time (A) = 307
--
--
--    //Enable Parallel Mode
--    sensor_write_register( 0x301A, 0x10D8); // RESET_REGISTER
--    sensor_write_register( 0x31D0, 0x0001); // HDR_COMP
--    
--    //PLL Enabled 27Mhz to 50Mhz
--    sensor_write_register( 0x302A, 0x0009 );//VT_PIX_CLK_DIV = 9
--    sensor_write_register( 0x302C, 0x0001 );//VT_SYS_CLK_DIV = 1
--    sensor_write_register( 0x302E, 0x0003 );//PRE_PLL_CLK_DIV = 3
--    sensor_write_register( 0x3030, 0x0032 );//PLL_MULTIPLIER = 50
--    sensor_write_register( 0x30B0, 0x1300 );    // DIGITAL_TEST
--    delay_ms(100); //ms
--    sensor_write_register( 0x301A, 0x10DC );    // RESET_REGISTER
--    sensor_write_register( 0x301A, 0x10DC );    // RESET_REGISTER
--                                          
--    //exposure                            
--    sensor_write_register( 0x3012, 0x0671 );    // COARSE_INTEGRATION_TIME
--    sensor_write_register( 0x30B0, 0x1330 );    // DIGITAL_TEST
--    sensor_write_register( 0x3056, 0x003B );    // GREEN1_GAIN
--    sensor_write_register( 0x305C, 0x003B );    // GREEN2_GAIN
--    sensor_write_register( 0x305A, 0x003B );    // RED_GAIN
--    sensor_write_register( 0x3058, 0x003B );    // BLUE_GAIN
--    //High Conversion gain                
--    sensor_write_register( 0x3100, 0x0004 );    // AE_CTRL_REG
++
 +	sensor_write_register(0x3e0f,0x90);
 +	sensor_write_register(0x3631,0x80);
 +	sensor_write_register(0x3310,0x83);
@@ -862,30 +835,25 @@ index 7678799..36def45 100644
 +	sensor_write_register(0x320d,0x08); //1000
 +	sensor_write_register(0x320e,0x03);
 +	sensor_write_register(0x320f,0xe8);
- 
++
 +	/*configOutputwindowposition*/
 +	sensor_write_register(0x3210,0x00);
 +	sensor_write_register(0x3211,0x60);
 +	sensor_write_register(0x3212,0x00);
 +	sensor_write_register(0x3213,0x04); //for BGGR out format 20160412
- 
--    //LOAD= Disable Embedded Data and Stats
--    sensor_write_register(0x3064, 0x1802);  // SMIA_TEST, EMBEDDED_STATS_EN, 0x0000
--    sensor_write_register(0x3064, 0x1802);  // SMIA_TEST, EMBEDDED_DATA, 0x0000 
++
 +	/*configOutputimagesize*/
 +	sensor_write_register(0x3208,0x05);
 +	sensor_write_register(0x3209,0x00);
 +	sensor_write_register(0x320a,0x03);
 +	sensor_write_register(0x320b,0xc0);
- 
--    sensor_write_register(0x30BA, 0x0008);       //20120502
++
 +	/*configFramestartphysicalposition*/
 +	sensor_write_register(0x3202,0x00);
 +	sensor_write_register(0x3203,0x08);
 +	sensor_write_register(0x3206,0x03);
 +	sensor_write_register(0x3207,0xcf);
- 
--    sensor_write_register(0x3EE4, 0xD308);  //the default value former is 0xd208
++
 +	/*powerconsumptionreduction*/
 +	sensor_write_register(0x3330,0x0d);
 +	sensor_write_register(0x3320,0x06);
@@ -894,11 +862,41 @@ index 7678799..36def45 100644
 +	//  sensor_write_register(0x3323,0x80); //20160606
 +	//  sensor_write_register(0x3600,0x54); //20160606
  
--    sensor_write_register(0x301A, 0x10DC);  // RESET_REGISTER
 +	printf("SC1135 960p 30fps sensor init OK!\n");
-+
+ 
+-    //Enable Parallel Mode
+-    sensor_write_register( 0x301A, 0x10D8); // RESET_REGISTER
+-    sensor_write_register( 0x31D0, 0x0001); // HDR_COMP
+-    
+-    //PLL Enabled 27Mhz to 50Mhz
+-    sensor_write_register( 0x302A, 0x0009 );//VT_PIX_CLK_DIV = 9
+-    sensor_write_register( 0x302C, 0x0001 );//VT_SYS_CLK_DIV = 1
+-    sensor_write_register( 0x302E, 0x0003 );//PRE_PLL_CLK_DIV = 3
+-    sensor_write_register( 0x3030, 0x0032 );//PLL_MULTIPLIER = 50
+-    sensor_write_register( 0x30B0, 0x1300 );    // DIGITAL_TEST
+-    delay_ms(100); //ms
+-    sensor_write_register( 0x301A, 0x10DC );    // RESET_REGISTER
+-    sensor_write_register( 0x301A, 0x10DC );    // RESET_REGISTER
+-                                          
+-    //exposure                            
+-    sensor_write_register( 0x3012, 0x0671 );    // COARSE_INTEGRATION_TIME
+-    sensor_write_register( 0x30B0, 0x1330 );    // DIGITAL_TEST
+-    sensor_write_register( 0x3056, 0x003B );    // GREEN1_GAIN
+-    sensor_write_register( 0x305C, 0x003B );    // GREEN2_GAIN
+-    sensor_write_register( 0x305A, 0x003B );    // RED_GAIN
+-    sensor_write_register( 0x3058, 0x003B );    // BLUE_GAIN
+-    //High Conversion gain                
+-    sensor_write_register( 0x3100, 0x0004 );    // AE_CTRL_REG
+-
+-
+-    //LOAD= Disable Embedded Data and Stats
+-    sensor_write_register(0x3064, 0x1802);  // SMIA_TEST, EMBEDDED_STATS_EN, 0x0000
+-    sensor_write_register(0x3064, 0x1802);  // SMIA_TEST, EMBEDDED_DATA, 0x0000 
+-
+-    sensor_write_register(0x30BA, 0x0008);       //20120502
 +#else
-+
+ 
+-    sensor_write_register(0x3EE4, 0xD308);  //the default value former is 0xd208
 +	//720p
 +	/*27Minput54Moutputpixelclockfrequency*/
 +	sensor_write_register(0x3010,0x07);
@@ -937,7 +935,8 @@ index 7678799..36def45 100644
 +	sensor_write_register(0x3322,0x01);
 +	// sensor_write_register(0x3323,0x80); //20160606
 +	// sensor_write_register(0x3600,0x54); //20160606
-+
+ 
+-    sensor_write_register(0x301A, 0x10DC);  // RESET_REGISTER
 +	printf("SC1135 720p 30fps sensor init OK!~~~~~~~~~~~~~~~~\n");
 +#endif
  
@@ -954,11 +953,10 @@ index 7678799..36def45 100644
      
  }
  
-diff --git a/mpp2/component/isp2/sensor/smartsens_sc1135/Makefile b/mpp2/component/isp2/sensor/smartsens_sc1135/Makefile
-new file mode 100644
-index 0000000..dbabfd2
+Index: 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/Makefile
+===================================================================
 --- /dev/null
-+++ b/mpp2/component/isp2/sensor/smartsens_sc1135/Makefile
++++ 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/Makefile
 @@ -0,0 +1,75 @@
 +#
 +# sensor lib Makefile
@@ -1035,59 +1033,10 @@ index 0000000..dbabfd2
 +clean:
 +	@$(RM) -rf $(TARGETLIB) $(OBJS)
 +	@$(RM) -rf $(LIBPATH) $(OBJPATH)
-diff --git a/mpp2/component/isp2/sensor/smartsens_sc1135/obj/sc1135_sensor_ctl.o b/mpp2/component/isp2/sensor/smartsens_sc1135/obj/sc1135_sensor_ctl.o
-new file mode 100644
-index 0000000000000000000000000000000000000000..4be65b4909c56e185717c77d8d7b16d2e2b5e86c
-GIT binary patch
-literal 4496
-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
-
-literal 0
-HcmV?d00001
-
-diff --git a/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c b/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c
-new file mode 100644
-index 0000000..5964694
+Index: 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c
+===================================================================
 --- /dev/null
-+++ b/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c
++++ 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_cmos.c
 @@ -0,0 +1,1450 @@
 +#if !defined(__SC1135_CMOS_H_)
 +#define __SC1135_CMOS_H_
@@ -2539,11 +2488,10 @@ index 0000000..5964694
 +#endif /* End of #ifdef __cplusplus */
 +
 +#endif /* __SC1135_CMOS_H_ */
-diff --git a/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c b/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c
-new file mode 100644
-index 0000000..ad920fb
+Index: 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c
+===================================================================
 --- /dev/null
-+++ b/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c
++++ 1.0-r0/mpp2/component/isp2/sensor/smartsens_sc1135/sc1135_sensor_ctl.c
 @@ -0,0 +1,358 @@
 +#include <stdio.h>
 +#include <sys/types.h>
@@ -2903,10 +2851,10 @@ index 0000000..ad920fb
 +	return;
 +}
 +
-diff --git a/mpp2/sample/common/sample_comm_isp.c b/mpp2/sample/common/sample_comm_isp.c
-index 672738b..33f0a97 100644
---- a/mpp2/sample/common/sample_comm_isp.c
-+++ b/mpp2/sample/common/sample_comm_isp.c
+Index: 1.0-r0/mpp2/sample/common/sample_comm_isp.c
+===================================================================
+--- 1.0-r0.orig/mpp2/sample/common/sample_comm_isp.c
++++ 1.0-r0/mpp2/sample/common/sample_comm_isp.c
 @@ -504,7 +504,7 @@ HI_S32 SAMPLE_COMM_ISP_Init(void)
      {
          case APTINA_9M034_DC_720P_30FPS:
@@ -2916,11 +2864,11 @@ index 672738b..33f0a97 100644
              stImageAttr.u16FrameRate = 30;
              stImageAttr.u16Width     = 1280;
              stImageAttr.u16Height    = 720;
-diff --git a/mpp2/sample/common/sample_comm_venc.c b/mpp2/sample/common/sample_comm_venc.c
-index bc5abe8..d8ffb60 100644
---- a/mpp2/sample/common/sample_comm_venc.c
-+++ b/mpp2/sample/common/sample_comm_venc.c
-@@ -334,8 +334,8 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP VencGrp,VENC_CHN VencChn, PAYLOAD_TYPE_E
+Index: 1.0-r0/mpp2/sample/common/sample_comm_venc.c
+===================================================================
+--- 1.0-r0.orig/mpp2/sample/common/sample_comm_venc.c
++++ 1.0-r0/mpp2/sample/common/sample_comm_venc.c
+@@ -334,8 +334,8 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP V
              stH264Attr.u32PicWidth = stPicSize.u32Width;/*the picture width*/
              stH264Attr.u32PicHeight = stPicSize.u32Height;/*the picture height*/
              stH264Attr.u32BufSize  = stPicSize.u32Width * stPicSize.u32Height * 2;/*stream buffer size*/
@@ -2931,16 +2879,16 @@ index bc5abe8..d8ffb60 100644
              stH264Attr.bField = HI_FALSE;  /* surpport frame code only for hi3516, bfield = HI_FALSE */
              stH264Attr.bMainStream = HI_TRUE; /* surpport main stream only for hi3516, bMainStream = HI_TRUE */
              stH264Attr.u32Priority = 0; /*channels precedence level. invalidate for hi3516*/
-@@ -392,7 +392,7 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP VencGrp,VENC_CHN VencChn, PAYLOAD_TYPE_E
-                 stH264Vbr.u32Gop = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;
-                 stH264Vbr.u32StatTime = 1;
-                 stH264Vbr.u32ViFrmRate = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;
--                stH264Vbr.fr32TargetFrmRate = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;
-+                stH264Vbr.fr32TargetFrmRate = 20;
-                 stH264Vbr.u32MinQp = 24;
-                 stH264Vbr.u32MaxQp = 45;
+@@ -348,7 +348,7 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP V
+                 stH264Cbr.u32Gop            = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;
+                 stH264Cbr.u32StatTime       = 1; /* stream rate statics time(s) */
+                 stH264Cbr.u32ViFrmRate      = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;/* input (vi) frame rate */
+-                stH264Cbr.fr32TargetFrmRate = (VIDEO_ENCODING_MODE_PAL== enNorm)?25:30;/* target frame rate */
++                stH264Cbr.fr32TargetFrmRate = 20;
                  switch (enSize)
-@@ -534,6 +534,14 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP VencGrp,VENC_CHN VencChn, PAYLOAD_TYPE_E
+                 {
+                     case PIC_QCIF:
+@@ -534,6 +534,13 @@ HI_S32 SAMPLE_COMM_VENC_Start(VENC_GRP V
              return HI_ERR_VENC_NOT_SUPPORT;
      }
  
@@ -2951,10 +2899,6 @@ index bc5abe8..d8ffb60 100644
 +
 +    printf("\n");
 +
-+
      s32Ret = HI_MPI_VENC_CreateChn(VencChn, &stVencChnAttr);
      if (HI_SUCCESS != s32Ret)
      {
--- 
-2.7.4
-
