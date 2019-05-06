@@ -15,13 +15,15 @@ LIC_FILES_CHKSUM = ""
 # No information for SRC_URI yet (only an external source tree was specified)
 SRC_URI = "https://github.com/hi35xx/hi35xx-buildroot/raw/master/package/himpp/himpp-hi3518v100/hi3518v100-mpp2-1.0.B.0.tgz \
            file://0001-Makefile-fixes.patch \
-           file://0002-SC1135-support.patch \
            file://clkcfg_hi3518.sh \
            file://load3518.sh \
            file://lowpower.sh \
            file://pinmux_hi3518.sh \
            file://sysctl_hi3518.sh \
+           file://0001-testing.patch \
            "
+
+#SRC_URI +=  "file://0002-SC1135-support.patch "
 
 SRC_URI[md5sum] = "50f84546addceac4e4fc8163b06ee995"
 SRC_URI[sha256sum] = "45b363b53ead77b673556e5d840c6bb2f603f203a8fe6a5e833b909898f32bbe"

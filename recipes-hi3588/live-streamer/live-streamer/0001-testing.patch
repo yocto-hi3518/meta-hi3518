@@ -1,0 +1,132 @@
+From 0e36f48d6e92e7cd70b113344bb54f894fc99236 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Mon, 6 May 2019 21:07:40 +1200
+Subject: [PATCH] testing
+
+---
+ src/platform/hi3518v100mpp/himpp-video-sensor.cpp | 52 ++++++++++++++++++++++-
+ src/platform/hi3518v100mpp/himpp-video-venc.cpp   | 16 ++++++-
+ 2 files changed, 66 insertions(+), 2 deletions(-)
+
+diff --git a/src/platform/hi3518v100mpp/himpp-video-sensor.cpp b/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
+index 7eeb2d2..a597780 100644
+--- a/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
++++ b/src/platform/hi3518v100mpp/himpp-video-sensor.cpp
+@@ -31,6 +31,55 @@ struct HIMPP_SENSOR_CONFIG
+ };
+ 
+ /***************************************************************************
++ * SmartSens SC1135
++ ***************************************************************************/
++
++static ISP_IMAGE_ATTR_S smartsens_sc1135_image_attr = {
++    .u16Width           = 1280,
++    .u16Height          = 720,
++    .u16FrameRate       = 30,
++    .enBayer            = BAYER_BGGR
++};
++
++static ISP_INPUT_TIMING_S smartsens_sc1135_input_timing = {
++    .enWndMode          = ISP_WIND_NONE
++};
++
++static VI_DEV_ATTR_S smartsens_sc1135_dev_attr = {
++	.enIntfMode     = VI_MODE_DIGITAL_CAMERA,
++	.enWorkMode     = VI_WORK_MODE_1Multiplex,
++	.au32CompMask   = { 0xFFF0000, 0x0 },
++	.enScanMode     = VI_SCAN_PROGRESSIVE,
++	.s32AdChnId     = { -1, -1, -1, -1 },
++	.enDataSeq      = VI_INPUT_DATA_YUYV,
++	.stSynCfg       = {
++		.enVsync        = VI_VSYNC_PULSE,
++		.enVsyncNeg     = VI_VSYNC_NEG_HIGH,
++		.enHsync        = VI_HSYNC_VALID_SINGNAL,
++		.enHsyncNeg     = VI_HSYNC_NEG_HIGH,
++		.enVsyncValid   = VI_VSYNC_NORM_PULSE,
++		.enVsyncValidNeg = VI_VSYNC_VALID_NEG_HIGH,
++		.stTimingBlank  = {
++			.u32HsyncHfb = 0, .u32HsyncAct = 1280, .u32HsyncHbb = 0,
++			.u32VsyncVfb = 0,   .u32VsyncVact = 720, .u32VsyncVbb = 0,
++			.u32VsyncVbfb = 0,  .u32VsyncVbact = 0,  .u32VsyncVbbb = 0
++		}
++	},
++	.enDataPath         = VI_PATH_ISP,
++	.enInputDataType    = VI_DATA_TYPE_RGB,
++	.bDataRev           = HI_FALSE,
++};
++
++static HIMPP_SENSOR_CONFIG smartsens_sc1135_sensor_config = {
++	.name               = "sc1135",
++	.module_path        = "libsns_sc1135.so",
++	.isp_image_attr     = &smartsens_sc1135_image_attr,
++	.isp_input_timing   = &smartsens_sc1135_input_timing,
++	.vi_dev_attr        = &smartsens_sc1135_dev_attr
++};
++
++
++/***************************************************************************
+  * Aptina AR0130 
+  ***************************************************************************/
+ 
+@@ -38,7 +87,7 @@ static ISP_IMAGE_ATTR_S aptina_ar0130_image_attr = {
+     .u16Width           = 1280,
+     .u16Height          = 720,
+     .u16FrameRate       = 30,
+-    .enBayer            = BAYER_GRBG
++    .enBayer            = BAYER_BGGR
+ };
+ 
+ static ISP_INPUT_TIMING_S aptina_ar0130_input_timing = {
+@@ -806,6 +855,7 @@ public:
+     HimppVideoSensorInitializer()
+     {
+ #define addSensor(sensor) himpp_video_sensor_map.emplace(sensor.name, &sensor)
++        addSensor(smartsens_sc1135_sensor_config);
+         addSensor(aptina_ar0130_sensor_config);
+         addSensor(aptina_mt9m034_sensor_config);
+         addSensor(galaxycore_gc1004_sensor_config);
+diff --git a/src/platform/hi3518v100mpp/himpp-video-venc.cpp b/src/platform/hi3518v100mpp/himpp-video-venc.cpp
+index fa5ac6d..ca0180d 100644
+--- a/src/platform/hi3518v100mpp/himpp-video-venc.cpp
++++ b/src/platform/hi3518v100mpp/himpp-video-venc.cpp
+@@ -17,6 +17,9 @@
+  * with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include <iostream>
++#include <cstring>
++
+ #include <himpp-common.h>
+ #include "himpp-video-venc.h"
+ 
+@@ -260,7 +263,7 @@ bool HimppVencChan::prepareVencChnAttr(VENC_CHN_ATTR_S &attr)
+             attr.stRcAttr.stAttrH264Vbr.u32Gop = _gop;
+             attr.stRcAttr.stAttrH264Vbr.u32StatTime = stattime;
+             attr.stRcAttr.stAttrH264Vbr.u32ViFrmRate = videoSource()->getFramerate();
+-            attr.stRcAttr.stAttrH264Vbr.fr32TargetFrmRate = _framerate;
++            attr.stRcAttr.stAttrH264Vbr.fr32TargetFrmRate = 30;
+             attr.stRcAttr.stAttrH264Vbr.u32MinQp = 24;
+             attr.stRcAttr.stAttrH264Vbr.u32MaxQp = 45;
+             attr.stRcAttr.stAttrH264Vbr.u32MaxBitRate = _bitrate;
+@@ -348,7 +351,18 @@ bool HimppVencChan::enableObject()
+     }
+ 
+     VENC_CHN_ATTR_S attr;
++    std::memset(&attr, 0, sizeof(attr));
++
+     prepareVencChnAttr(attr);
++
++    for(int n = 0; n < sizeof(attr); n++)
++    {
++    	printf("%02x ", *(((unsigned char *)&attr)+n));
++    }
++
++    printf("\n");
++
++
+     if ((s32Ret = HI_MPI_VENC_CreateChn(_chnid, &attr)) != HI_SUCCESS) {
+         HIMPP_PRINT("HI_MPI_VENC_CreateChn %d faild [%#x]\n",
+                     _chnid, s32Ret);
+-- 
+2.7.4
+
