@@ -1,2 +1,4 @@
+#!/bin/sh
+
 cd /lib/modules/3.0.8/kernel/drivers/himpp/ && ./load3518.sh -i ar0130
 

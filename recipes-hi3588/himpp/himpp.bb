@@ -20,6 +20,7 @@ SRC_URI = "https://github.com/hi35xx/hi35xx-buildroot/raw/master/package/himpp/h
            file://lowpower.sh \
            file://pinmux_hi3518.sh \
            file://sysctl_hi3518.sh \
+           file://load_himpp \
            file://0001-testing.patch \
            "
 
@@ -126,7 +127,7 @@ INSANE_SKIP_${PN} += "ldflags file-rdeps"
 INSANE_SKIP_${PN}-dev += "dev-elf"
 
 
-FILES_${PN} += "${kmoddir}/*.sh"
+FILES_${PN} += " ${kmoddir}/*.sh ${bindir}/load_himpp /himpp_samples"
 #INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 
 do_install() {
@@ -138,6 +139,12 @@ do_install() {
    install -m 0755 ${S}/${HIMMP_EXT_DIR}/*/*.ko ${D}/${kmoddir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.a ${D}${libdir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.so ${D}${libdir}
+   
+   install -d ${D}${bindir}
+   install -m 0755 ${S}/load_himpp ${D}${bindir}/load_himpp
+
+   install -d ${D}/himpp_samples
+   install -m 0755 ${S}/${HIMPP_SAMPLE_DIR}/venc/sample_venc ${D}/himpp_samples/sample_venc
 
    install -d  ${D}${includedir}/hi3518v100mpp
    cp -a ${S}/mpp2/include/* ${D}${includedir}/hi3518v100mpp

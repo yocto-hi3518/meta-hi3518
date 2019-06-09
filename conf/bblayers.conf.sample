@@ -9,4 +9,5 @@ BBLAYERS ?= " \
   ##SOURCES##/openembedded-core/meta \
   ##SOURCES##/meta-hi3518 \
   ##SOURCES##/meta-openembedded/meta-oe \
+  ##SOURCES##/meta-openembedded/meta-python \
   "

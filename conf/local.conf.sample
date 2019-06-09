@@ -214,3 +214,6 @@ PACKAGECONFIG_append_pn-nativesdk-qemu = " sdl"
 CONF_VERSION = "1"
 
 DISTRO = "hidist"
+
+PREFERRED_VERSION_python3-cffi-native = "1.13.0"
+PREFERRED_VERSION_python3-cffi = "1.13.0"
