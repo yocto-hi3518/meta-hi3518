@@ -20,7 +20,7 @@ inherit python3native
 TARGET_LDFLAGS_remove = "${ASNEEDED}"
 
 DEPENDS = "himpp python3-cffi python3-cffi-native python3-pycparser"
-RDEPENDS_${PN} = "himpp-dev python3-cffi"
+RDEPENDS_${PN} = "himpp python3-cffi"
 
 INSANE_SKIP_${PN} += "dev-deps"
 
