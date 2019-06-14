@@ -110,15 +110,9 @@ do_compile() {
     #himpp_make_sample readme
     #himpp_make_sample region
     #himpp_make_sample tde
-    #himpp_make_sample vda
+    himpp_make_sample vda
     himpp_make_sample venc
     #himpp_make_sample vio
-
-   cd ${S}/mpp2/lib/
-   for f in *.a; do 
-     $CC -shared -fPIC -o ${f%.a}.so -Wl,--whole-archive $f -Wl,--no-whole-archive
-   done
-
 }
 
 kmoddir = "/lib/modules/${KERNEL_VERSION}/kernel/drivers/himpp"
@@ -135,10 +129,9 @@ do_install() {
    install -d ${D}${libdir}
    install -m 0755 ${S}/*.sh ${D}${kmoddir}/
    install -m 0755 ${S}/mpp2/ko/*.ko ${D}${kmoddir}
-   install -m 0755 ${S}/mpp2/lib/*.so ${D}${libdir}
+   install -m 0755 ${S}/mpp2/lib/*.a ${D}${libdir}
    install -m 0755 ${S}/${HIMMP_EXT_DIR}/*/*.ko ${D}/${kmoddir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.a ${D}${libdir}
-   install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.so ${D}${libdir}
    
    install -d ${D}${bindir}
    install -m 0755 ${S}/load_himpp ${D}${bindir}/load_himpp
