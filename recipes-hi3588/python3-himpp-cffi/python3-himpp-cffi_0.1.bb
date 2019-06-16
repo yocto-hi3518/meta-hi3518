@@ -1,11 +1,13 @@
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-#SRC_URI = "git..."
+SRC_URI = "git://github.com/yocto-hi3518/python3-himpp-cffi"
 
 #SRCREV = "v${PV}"
 # Modify these as desired
 #PV_append = "+git${SRCPV}"
+
+SRCREV = "master"
 
 S = "${WORKDIR}"
 
