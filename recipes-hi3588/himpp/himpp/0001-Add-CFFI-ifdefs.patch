@@ -1,0 +1,102 @@
+From 5f1ca4fe42541500cc3e70d5991f3cf69af76338 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <sean.kelly@aviatnet.com>
+Date: Mon, 17 Jun 2019 13:48:00 +1200
+Subject: [PATCH] Add CFFI ifdefs
+
+---
+ mpp2/include/hi_debug.h   | 2 +-
+ mpp2/include/hi_defines.h | 3 +++
+ mpp2/include/hi_math.h    | 8 ++++++--
+ 3 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/mpp2/include/hi_debug.h b/mpp2/include/hi_debug.h
+index 5c77fed..8640313 100644
+--- a/mpp2/include/hi_debug.h
++++ b/mpp2/include/hi_debug.h
+@@ -36,7 +36,7 @@ History       :
+ #ifndef __HI_DEBUG_H__
+ #define __HI_DEBUG_H__
+ 
+-#ifndef __KERNEL__
++#if !defined(__KERNEL__) && !defined(CFFI)
+ #include <stdarg.h>
+ #endif
+ 
+diff --git a/mpp2/include/hi_defines.h b/mpp2/include/hi_defines.h
+index 4976d9d..bd72b6c 100644
+--- a/mpp2/include/hi_defines.h
++++ b/mpp2/include/hi_defines.h
+@@ -58,6 +58,8 @@ extern "C"{
+ #define LINE_LEN_BIT            5
+ #define LINE_LEN                (1<<LINE_LEN_BIT)
+ #define LINE_BASE_MASK          (~(LINE_LEN-1))
++
++#if !defined(CFFI)
+ static inline void InvalidateDcache(unsigned long addr, unsigned long len)
+ {
+     unsigned long end;
+@@ -94,6 +96,7 @@ static inline  void FlushDcache(unsigned long addr, unsigned long len)
+     }
+     return;
+ }
++#endif
+ 
+ /* For Sys */
+ #define DEFAULT_ALIGN    16
+diff --git a/mpp2/include/hi_math.h b/mpp2/include/hi_math.h
+index 2b3e3a7..1fc9056 100644
+--- a/mpp2/include/hi_math.h
++++ b/mpp2/include/hi_math.h
+@@ -109,6 +109,7 @@ extern "C"{
+ 		( ( (x) & 0x00ff0000 ) >> 8 ) |		\
+ 		( ( (x) >> 24 ) & 0x000000ff )  )
+ 
++#if !defined(CFFI)
+ __inline static HI_BOOL IS_LITTLE_END(void)
+ {
+     union unEND_TEST_U
+@@ -124,7 +125,7 @@ __inline static HI_BOOL IS_LITTLE_END(void)
+     
+     return (unEndTest.u32Test > 0x01020304) ? (HI_TRUE) : (HI_FALSE);
+ }
+-
++#endif
+ 
+ /******************************************************************************
+ ** FRACTION32(de,nu)          fraction: nu(minator) / de(nominator).
+@@ -160,6 +161,7 @@ __inline static HI_BOOL IS_LITTLE_END(void)
+ #define YUV_U(c)   ( ((c) & 0xff00) >> 8)
+ #define YUV_V(c)   (  (c) & 0xff)
+ 
++#if !defined(CFFI)
+ /******************************************************************************
+ ** Rgb2Yc(r, g, b, *y, *u, *u)    convert r,g,b to y,u,v
+ ** Rgb2Yuv(rgb, *yuv)             convert rgb to yuv
+@@ -207,6 +209,7 @@ __inline static HI_VOID GetYCFromRGB(HI_U32 rgb, HI_U32 * pY, HI_U32 * pC)
+     *pY = color_y;
+     *pC = color_c;
+ }
++#endif
+ 
+ /*******************************************************************************
+ ** FpsControl Useing Sample:
+@@ -227,6 +230,7 @@ typedef struct hiFPS_CTRL_S
+     HI_U32 u32FrmKey;  /* update key frame   */
+ } FPS_CTRL_S;
+ 
++#if !defined(CFFI)
+ __inline static HI_VOID InitFps(FPS_CTRL_S *pFrmCtrl, HI_U32 u32FullFps,
+                                 HI_U32 u32TagFps)
+ {
+@@ -279,7 +283,7 @@ __inline static HI_U64 GetSysTimeByUsec(void)
+     #endif
+     return  (stTime.tv_sec * 1000000LLU) + stTime.tv_usec;
+ }
+-
++#endif
+ 
+ #ifdef __cplusplus
+ #if __cplusplus
+-- 
+2.7.4
+

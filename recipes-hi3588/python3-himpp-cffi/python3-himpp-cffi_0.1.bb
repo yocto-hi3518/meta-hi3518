@@ -9,7 +9,7 @@ SRC_URI = "git://github.com/yocto-hi3518/python3-himpp-cffi"
 
 SRCREV = "master"
 
-S = "${WORKDIR}"
+S = "${WORKDIR}/git"
 
 inherit setuptools3
 inherit cmake

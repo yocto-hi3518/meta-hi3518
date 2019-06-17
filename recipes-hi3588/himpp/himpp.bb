@@ -22,6 +22,7 @@ SRC_URI = "https://github.com/hi35xx/hi35xx-buildroot/raw/master/package/himpp/h
            file://sysctl_hi3518.sh \
            file://load_himpp \
            file://0001-testing.patch \
+           file://0001-Add-CFFI-ifdefs.patch \
            "
 
 #SRC_URI +=  "file://0002-SC1135-support.patch "
