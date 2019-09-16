@@ -1,0 +1,286 @@
+From e3d4d7583af6b869d11b4e95e535c6808eeb1bb1 Mon Sep 17 00:00:00 2001
+From: Sean Kelly <seandtkelly@gmail.com>
+Date: Sun, 16 Jun 2019 21:44:36 +1200
+Subject: [PATCH 2/2] sample_venc remove extra vbs
+
+---
+ mpp2/sample/venc/sample_venc.c | 198 +++++++++++++++++++++--------------------
+ 1 file changed, 103 insertions(+), 95 deletions(-)
+
+diff --git a/mpp2/sample/venc/sample_venc.c b/mpp2/sample/venc/sample_venc.c
+index 50f8db2..3838bbe 100644
+--- a/mpp2/sample/venc/sample_venc.c
++++ b/mpp2/sample/venc/sample_venc.c
+@@ -19,7 +19,7 @@ extern "C"{
+ 
+ #include "sample_comm.h"
+ 
+-VIDEO_NORM_E gs_enNorm = VIDEO_ENCODING_MODE_NTSC;
++VIDEO_NORM_E gs_enNorm = VIDEO_ENCODING_MODE_PAL;
+ 
+ /******************************************************************************
+ * function : show usage
+@@ -85,7 +85,7 @@ HI_S32 SAMPLE_VENC_720P_CLASSIC(HI_VOID)
+     VENC_GRP VencGrp;
+     VENC_CHN VencChn;
+     SAMPLE_RC_E enRcMode= SAMPLE_RC_CBR;
+-    HI_S32 s32ChnNum = 3;
++    HI_S32 s32ChnNum = 1;
+     
+     HI_S32 s32Ret = HI_SUCCESS;
+     HI_U32 u32BlkSize;
+@@ -115,21 +115,28 @@ HI_S32 SAMPLE_VENC_720P_CLASSIC(HI_VOID)
+     u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
+                 enSize[0], SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
+     stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
+-    stVbConf.astCommPool[0].u32BlkCnt = 10;
++    stVbConf.astCommPool[0].u32BlkCnt = 6;
++//
++//    u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
++//                enSize[1], SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
++//    stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
++//    stVbConf.astCommPool[1].u32BlkCnt = 6;
++//
++//    u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
++//                enSize[2], SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
++//    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
++//    stVbConf.astCommPool[2].u32BlkCnt = 6;
++//
++//    /* hist buf*/
++//    stVbConf.astCommPool[3].u32BlkSize = (196*4);
++//    stVbConf.astCommPool[3].u32BlkCnt = 6;
++
++//    stVbConf.astCommPool[0].u32BlkSize = (1280*720*3/2);
++//    stVbConf.astCommPool[0].u32BlkCnt = 6;
+ 
+-    u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
+-                enSize[1], SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
+-    stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
+-    stVbConf.astCommPool[1].u32BlkCnt = 6;
++    stVbConf.astCommPool[1].u32BlkSize = (196*4);
++    stVbConf.astCommPool[1].u32BlkCnt = 4;
+ 
+-    u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
+-                enSize[2], SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
+-    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
+-    stVbConf.astCommPool[2].u32BlkCnt = 6;
+-    
+-    /* hist buf*/
+-    stVbConf.astCommPool[3].u32BlkSize = (196*4);
+-    stVbConf.astCommPool[3].u32BlkCnt = 6;
+ 
+     /******************************************
+      step 2: mpp system init. 
+@@ -200,32 +207,32 @@ HI_S32 SAMPLE_VENC_720P_CLASSIC(HI_VOID)
+         goto END_VENC_720P_CLASSIC_4;
+     }
+ 
+-    VpssChn = 1;
+-    stVpssChnMode.enChnMode     = VPSS_CHN_MODE_USER;
+-    stVpssChnMode.bDouble       = HI_FALSE;
+-    stVpssChnMode.enPixelFormat = SAMPLE_PIXEL_FORMAT;
+-    stVpssChnMode.u32Width      = 640;
+-    stVpssChnMode.u32Height     = 480;
+-    s32Ret = SAMPLE_COMM_VPSS_EnableChn(VpssGrp, VpssChn, &stVpssChnAttr, &stVpssChnMode, HI_NULL);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Enable vpss chn failed!\n");
+-        goto END_VENC_720P_CLASSIC_4;
+-    }
+-
+-    VpssChn = 3;
+-    stVpssExtChnAttr.s32BindChn = 1;
+-    stVpssExtChnAttr.s32SrcFrameRate = 30;
+-    stVpssExtChnAttr.s32DstFrameRate = 30;
+-    stVpssExtChnAttr.enPixelFormat   = SAMPLE_PIXEL_FORMAT;
+-    stVpssExtChnAttr.u32Width        = 320;
+-    stVpssExtChnAttr.u32Height       = 240;
+-    s32Ret = SAMPLE_COMM_VPSS_EnableChn(VpssGrp, VpssChn, HI_NULL, HI_NULL, &stVpssExtChnAttr);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Enable vpss chn failed!\n");
+-        goto END_VENC_720P_CLASSIC_4;
+-    }
++//    VpssChn = 1;
++//    stVpssChnMode.enChnMode     = VPSS_CHN_MODE_USER;
++//    stVpssChnMode.bDouble       = HI_FALSE;
++//    stVpssChnMode.enPixelFormat = SAMPLE_PIXEL_FORMAT;
++//    stVpssChnMode.u32Width      = 640;
++//    stVpssChnMode.u32Height     = 480;
++//    s32Ret = SAMPLE_COMM_VPSS_EnableChn(VpssGrp, VpssChn, &stVpssChnAttr, &stVpssChnMode, HI_NULL);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Enable vpss chn failed!\n");
++//        goto END_VENC_720P_CLASSIC_4;
++//    }
++//
++//    VpssChn = 3;
++//    stVpssExtChnAttr.s32BindChn = 1;
++//    stVpssExtChnAttr.s32SrcFrameRate = 30;
++//    stVpssExtChnAttr.s32DstFrameRate = 30;
++//    stVpssExtChnAttr.enPixelFormat   = SAMPLE_PIXEL_FORMAT;
++//    stVpssExtChnAttr.u32Width        = 320;
++//    stVpssExtChnAttr.u32Height       = 240;
++//    s32Ret = SAMPLE_COMM_VPSS_EnableChn(VpssGrp, VpssChn, HI_NULL, HI_NULL, &stVpssExtChnAttr);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Enable vpss chn failed!\n");
++//        goto END_VENC_720P_CLASSIC_4;
++//    }
+ 
+     /******************************************
+      step 5: start stream venc
+@@ -250,43 +257,43 @@ HI_S32 SAMPLE_VENC_720P_CLASSIC(HI_VOID)
+         goto END_VENC_720P_CLASSIC_5;
+     }
+ 
+-    /*** vga **/
+-    VpssChn = 1;
+-    VencGrp = 1;
+-    VencChn = 1;
+-    s32Ret = SAMPLE_COMM_VENC_Start(VencGrp, VencChn, enPayLoad[1], \
+-                                    gs_enNorm, enSize[1], enRcMode);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Start Venc failed!\n");
+-        goto END_VENC_720P_CLASSIC_5;
+-    }
+-
+-    s32Ret = SAMPLE_COMM_VENC_BindVpss(VencChn, VpssGrp, VpssChn);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Start Venc failed!\n");
+-        goto END_VENC_720P_CLASSIC_5;
+-    }
+-
+-    /*** vga **/
+-    VpssChn = 3;
+-    VencGrp = 2;
+-    VencChn = 2;
+-    s32Ret = SAMPLE_COMM_VENC_Start(VencGrp, VencChn, enPayLoad[2], \
+-                                    gs_enNorm, enSize[2], enRcMode);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Start Venc failed!\n");
+-        goto END_VENC_720P_CLASSIC_5;
+-    }
+-
+-    s32Ret = SAMPLE_COMM_VENC_BindVpss(VencChn, VpssGrp, VpssChn);
+-    if (HI_SUCCESS != s32Ret)
+-    {
+-        SAMPLE_PRT("Start Venc failed!\n");
+-        goto END_VENC_720P_CLASSIC_5;
+-    }
++//    /*** vga **/
++//    VpssChn = 1;
++//    VencGrp = 1;
++//    VencChn = 1;
++//    s32Ret = SAMPLE_COMM_VENC_Start(VencGrp, VencChn, enPayLoad[1], \
++//                                    gs_enNorm, enSize[1], enRcMode);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Start Venc failed!\n");
++//        goto END_VENC_720P_CLASSIC_5;
++//    }
++//
++//    s32Ret = SAMPLE_COMM_VENC_BindVpss(VencChn, VpssGrp, VpssChn);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Start Venc failed!\n");
++//        goto END_VENC_720P_CLASSIC_5;
++//    }
++//
++//    /*** vga **/
++//    VpssChn = 3;
++//    VencGrp = 2;
++//    VencChn = 2;
++//    s32Ret = SAMPLE_COMM_VENC_Start(VencGrp, VencChn, enPayLoad[2], \
++//                                    gs_enNorm, enSize[2], enRcMode);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Start Venc failed!\n");
++//        goto END_VENC_720P_CLASSIC_5;
++//    }
++//
++//    s32Ret = SAMPLE_COMM_VENC_BindVpss(VencChn, VpssGrp, VpssChn);
++//    if (HI_SUCCESS != s32Ret)
++//    {
++//        SAMPLE_PRT("Start Venc failed!\n");
++//        goto END_VENC_720P_CLASSIC_5;
++//    }
+ 
+     /******************************************
+      step 6: stream venc process -- get stream, then save it to file. 
+@@ -316,27 +323,27 @@ END_VENC_720P_CLASSIC_5:
+     SAMPLE_COMM_VENC_UnBindVpss(VencGrp, VpssGrp, VpssChn);
+     SAMPLE_COMM_VENC_Stop(VencGrp,VencChn);
+ 
+-    VpssChn = 1;
+-    VencGrp = 1;   
+-    VencChn = 1;
+-    SAMPLE_COMM_VENC_UnBindVpss(VencGrp, VpssGrp, VpssChn);
+-    SAMPLE_COMM_VENC_Stop(VencGrp,VencChn);
++    //VpssChn = 1;
++    //VencGrp = 1;   
++    //VencChn = 1;
++    //SAMPLE_COMM_VENC_UnBindVpss(VencGrp, VpssGrp, VpssChn);
++    //SAMPLE_COMM_VENC_Stop(VencGrp,VencChn);
+ 
+-    VpssChn = 3;
+-    VencGrp = 2;   
+-    VencChn = 2;
+-    SAMPLE_COMM_VENC_UnBindVpss(VencGrp, VpssGrp, VpssChn);
+-    SAMPLE_COMM_VENC_Stop(VencGrp,VencChn);
++    //VpssChn = 3;
++    //VencGrp = 2;   
++    //VencChn = 2;
++    //SAMPLE_COMM_VENC_UnBindVpss(VencGrp, VpssGrp, VpssChn);
++    //SAMPLE_COMM_VENC_Stop(VencGrp,VencChn);
+ 
+     SAMPLE_COMM_VI_UnBindVpss(stViConfig.enViMode);
+ END_VENC_720P_CLASSIC_4:	//vpss stop
+     VpssGrp = 0;
+-    VpssChn = 3;
+-    SAMPLE_COMM_VPSS_DisableChn(VpssGrp, VpssChn);
++//    VpssChn = 3;
++//    SAMPLE_COMM_VPSS_DisableChn(VpssGrp, VpssChn);
+     VpssChn = 0;
+     SAMPLE_COMM_VPSS_DisableChn(VpssGrp, VpssChn);
+-    VpssChn = 1;
+-    SAMPLE_COMM_VPSS_DisableChn(VpssGrp, VpssChn);
++//    VpssChn = 1;
++//    SAMPLE_COMM_VPSS_DisableChn(VpssGrp, VpssChn);
+ END_VENC_720P_CLASSIC_3:    //vpss stop       
+     SAMPLE_COMM_VI_UnBindVpss(stViConfig.enViMode);
+ END_VENC_720P_CLASSIC_2:    //vpss stop   
+@@ -356,7 +363,7 @@ END_VENC_720P_CLASSIC_0:	//system exit
+ ******************************************************************************/
+ HI_S32 SAMPLE_VENC_720P_MJPEG(HI_VOID)
+ {
+-    PAYLOAD_TYPE_E enPayLoad = PT_MJPEG;
++    PAYLOAD_TYPE_E enPayLoad = PT_H264;
+     PIC_SIZE_E enSize = PIC_HD720;
+ 
+     VB_CONF_S stVbConf;
+@@ -369,7 +376,7 @@ HI_S32 SAMPLE_VENC_720P_MJPEG(HI_VOID)
+     
+     VENC_GRP VencGrp;
+     VENC_CHN VencChn;
+-    SAMPLE_RC_E enRcMode = SAMPLE_RC_CBR;
++    SAMPLE_RC_E enRcMode = SAMPLE_RC_VBR;
+     HI_S32 s32ChnNum = 1;
+         
+     HI_S32 s32Ret = HI_SUCCESS;
+@@ -400,7 +407,8 @@ HI_S32 SAMPLE_VENC_720P_MJPEG(HI_VOID)
+     u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,\
+                 enSize, SAMPLE_PIXEL_FORMAT, SAMPLE_SYS_ALIGN_WIDTH);
+ 
+-    stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
++    stVbConf.astCommPool[0].u32BlkSize = (1280*720*3/2);
++//    stVbConf.astCommPool[0].u32BlkSize = u32BlkSize/2;
+     stVbConf.astCommPool[0].u32BlkCnt = 10;
+ 
+     /* hist buf*/
+-- 
+2.7.4
+

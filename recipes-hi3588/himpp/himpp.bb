@@ -133,6 +133,7 @@ do_install() {
    install -m 0755 ${S}/mpp2/lib/*.a ${D}${libdir}
    install -m 0755 ${S}/${HIMMP_EXT_DIR}/*/*.ko ${D}/${kmoddir}
    install -m 0755 ${S}/${HIMMP_LIB_DIR}/*.a ${D}${libdir}
+   install -m 0755 ${S}/${HIMMP_LIB_DIR}/libsns*.so ${D}${libdir}
    
    install -d ${D}${bindir}
    install -m 0755 ${S}/load_himpp ${D}${bindir}/load_himpp
